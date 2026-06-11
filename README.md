@@ -11,6 +11,16 @@ The app is wired to this Supabase project by default:
 
 The database password is not used in the Flutter client app.
 
+## Cloudflare Pages
+
+For frontend hosting on Cloudflare Pages, use:
+
+- Build command: `flutter pub get && flutter build web --release`
+- Build output directory: `build/web`
+- Root directory: `.`
+
+The app includes `web/_redirects` so single-page routes keep working on refresh.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
