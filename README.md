@@ -4,18 +4,12 @@ A new Flutter project.
 
 ## Supabase setup
 
-This app expects Supabase values at build time:
+The app is wired to this Supabase project by default:
 
-```bash
-flutter build web --release \
-  --dart-define=SUPABASE_URL=your-url \
-  --dart-define=SUPABASE_PUBLISHABLE_KEY=your-key
-```
+- URL: `https://yhdmhbwudxjukssjlvkd.supabase.co`
+- Key: the public anon/publishable key provided for the project
 
-For Render, set the same values in the service build environment and use the same
-`--dart-define` flags in the build command.
-
-If those variables are omitted, the app still loads, but Supabase is not initialized.
+The database password is not used in the Flutter client app.
 
 ## Getting Started
 
