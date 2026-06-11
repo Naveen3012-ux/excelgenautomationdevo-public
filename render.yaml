@@ -2,7 +2,7 @@ services:
   - type: web
     name: excelgenautomationdevo
     env: static
-    buildCommand: flutter pub get && flutter build web --release
+    buildCommand: flutter pub get && flutter build web --release --dart-define=SUPABASE_URL=$SUPABASE_URL --dart-define=SUPABASE_PUBLISHABLE_KEY=$SUPABASE_PUBLISHABLE_KEY
     staticPublishPath: build/web
     routes:
       - type: rewrite

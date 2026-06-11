@@ -2,6 +2,21 @@
 
 A new Flutter project.
 
+## Supabase setup
+
+This app expects Supabase values at build time:
+
+```bash
+flutter build web --release \
+  --dart-define=SUPABASE_URL=your-url \
+  --dart-define=SUPABASE_PUBLISHABLE_KEY=your-key
+```
+
+For Render, set the same values in the service build environment and use the same
+`--dart-define` flags in the build command.
+
+If those variables are omitted, the app still loads, but Supabase is not initialized.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
