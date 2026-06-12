@@ -2,7 +2,7 @@ services:
   - type: web
     name: excelgenautomationdevo
     env: static
-    buildCommand: flutter pub get && flutter build web --release
+    buildCommand: ./scripts/render_build.sh
     staticPublishPath: build/web
     routes:
       - type: rewrite
