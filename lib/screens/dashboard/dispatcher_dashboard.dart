@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:excelgenautomationdevo/screens/dispatcher_flow/schedule_sheet.dart';
+import 'package:excelgenautomationdevo/screens/dispatcher_flow/schedule_upload.dart';
 
 class DispatcherDashboard extends StatelessWidget {
   const DispatcherDashboard({super.key});
@@ -11,11 +13,16 @@ class DispatcherDashboard extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final isCompact = constraints.maxWidth < 700;
-            final isMedium = constraints.maxWidth >= 700 && constraints.maxWidth < 1100;
+            final isMedium =
+                constraints.maxWidth >= 700 && constraints.maxWidth < 1100;
             final isWide = constraints.maxWidth >= 1100;
 
             final content = Padding(
-              padding: EdgeInsets.all(isWide ? 16 : isCompact ? 10 : 12),
+              padding: EdgeInsets.all(isWide
+                  ? 16
+                  : isCompact
+                      ? 10
+                      : 12),
               child: Column(
                 children: [
                   _TopBar(isWide: isWide, isCompact: isCompact),
@@ -87,16 +94,30 @@ class _Sidebar extends StatelessWidget {
             const _ProfileCard(),
             const SizedBox(height: 18),
             ...[
-              const _SidebarItem(icon: Icons.dashboard_outlined, label: 'Dashboard', selected: true),
-              const _SidebarItem(icon: Icons.upload_file_outlined, label: 'File Upload'),
-              const _SidebarItem(icon: Icons.apartment_outlined, label: 'Plant Update'),
-              const _SidebarItem(icon: Icons.calendar_month_outlined, label: 'Schedule Update'),
-              const _SidebarItem(icon: Icons.dataset_outlined, label: 'Master Data'),
-              const _SidebarItem(icon: Icons.grid_view_outlined, label: 'Pivot List'),
-              const _SidebarItem(icon: Icons.local_shipping_outlined, label: 'Dispatch Update'),
-              const _SidebarItem(icon: Icons.dashboard_customize_outlined, label: 'Dedicated Dashboard'),
+              const _SidebarItem(
+                  icon: Icons.dashboard_outlined,
+                  label: 'Dashboard',
+                  selected: true),
+              const _SidebarItem(
+                  icon: Icons.upload_file_outlined, label: 'File Upload'),
+              const _SidebarItem(
+                  icon: Icons.apartment_outlined, label: 'Plant Update'),
+              const _SidebarItem(
+                  icon: Icons.calendar_month_outlined,
+                  label: 'Schedule Update'),
+              const _SidebarItem(
+                  icon: Icons.dataset_outlined, label: 'Master Data'),
+              const _SidebarItem(
+                  icon: Icons.grid_view_outlined, label: 'Pivot List'),
+              const _SidebarItem(
+                  icon: Icons.local_shipping_outlined,
+                  label: 'Dispatch Update'),
+              const _SidebarItem(
+                  icon: Icons.dashboard_customize_outlined,
+                  label: 'Dedicated Dashboard'),
             ].map((item) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   child: item,
                 )),
             const SizedBox(height: 18),
@@ -147,7 +168,8 @@ class _BrandIcon extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: const Color(0x552F80ED)),
       ),
-      child: const Icon(Icons.inventory_2_rounded, color: Colors.white, size: 20),
+      child:
+          const Icon(Icons.inventory_2_rounded, color: Colors.white, size: 20),
     );
   }
 }
@@ -239,7 +261,8 @@ class _SidebarFooter extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.notifications_none_rounded, color: Colors.white, size: 20),
+              Icon(Icons.notifications_none_rounded,
+                  color: Colors.white, size: 20),
               SizedBox(width: 12),
               Text('Notifications', style: TextStyle(color: Colors.white)),
               Spacer(),
@@ -275,7 +298,8 @@ class _Badge extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700),
+        style: const TextStyle(
+            color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700),
       ),
     );
   }
@@ -305,7 +329,8 @@ class _TopBar extends StatelessWidget {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              const Icon(Icons.notifications_none_rounded, color: Color(0xFF1E293B)),
+              const Icon(Icons.notifications_none_rounded,
+                  color: Color(0xFF1E293B)),
               Positioned(
                 right: -2,
                 top: -2,
@@ -319,7 +344,10 @@ class _TopBar extends StatelessWidget {
                   alignment: Alignment.center,
                   child: const Text(
                     '8',
-                    style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700),
                   ),
                 ),
               ),
@@ -332,17 +360,20 @@ class _TopBar extends StatelessWidget {
           backgroundColor: Color(0xFF0F2F6F),
           child: Text(
             'DU',
-            style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
+            style: TextStyle(
+                color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
           ),
         ),
         if (!isCompact) ...[
           const SizedBox(width: 10),
           const Text(
             'Dispatch User',
-            style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF0F172A)),
+            style: TextStyle(
+                fontWeight: FontWeight.w600, color: Color(0xFF0F172A)),
           ),
           const SizedBox(width: 4),
-          const Icon(Icons.keyboard_arrow_down_rounded, color: Color(0xFF64748B)),
+          const Icon(Icons.keyboard_arrow_down_rounded,
+              color: Color(0xFF64748B)),
         ],
       ],
     );
@@ -477,7 +508,8 @@ class _WelcomeHeader extends StatelessWidget {
       child: const Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.calendar_month_outlined, size: 18, color: Color(0xFF334155)),
+          Icon(Icons.calendar_month_outlined,
+              size: 18, color: Color(0xFF334155)),
           SizedBox(width: 10),
           Text(
             '22 May 2025, Thursday',
@@ -627,7 +659,9 @@ class _StatCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(color: Color(0xFF334155), fontSize: 13)),
+                Text(title,
+                    style: const TextStyle(
+                        color: Color(0xFF334155), fontSize: 13)),
                 const SizedBox(height: 6),
                 Text(
                   value,
@@ -672,10 +706,26 @@ class _OverviewGrid extends StatelessWidget {
           total: '1,250',
           centerLabel: 'Total PRs',
           segments: [
-            _RingSegment(color: Color(0xFF4CAF50), label: 'Delivered', value: '950 (76%)', flex: 76),
-            _RingSegment(color: Color(0xFF2F80ED), label: 'In Transit', value: '70 (6%)', flex: 6),
-            _RingSegment(color: Color(0xFFF59E0B), label: 'Pending', value: '200 (16%)', flex: 16),
-            _RingSegment(color: Color(0xFFEF4444), label: 'Delayed', value: '100 (8%)', flex: 8),
+            _RingSegment(
+                color: Color(0xFF4CAF50),
+                label: 'Delivered',
+                value: '950 (76%)',
+                flex: 76),
+            _RingSegment(
+                color: Color(0xFF2F80ED),
+                label: 'In Transit',
+                value: '70 (6%)',
+                flex: 6),
+            _RingSegment(
+                color: Color(0xFFF59E0B),
+                label: 'Pending',
+                value: '200 (16%)',
+                flex: 16),
+            _RingSegment(
+                color: Color(0xFFEF4444),
+                label: 'Delayed',
+                value: '100 (8%)',
+                flex: 8),
           ],
         ),
       ),
@@ -896,7 +946,8 @@ class _RingChart extends StatelessWidget {
                       Container(
                         width: 10,
                         height: 10,
-                        decoration: BoxDecoration(color: segment.color, shape: BoxShape.circle),
+                        decoration: BoxDecoration(
+                            color: segment.color, shape: BoxShape.circle),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
@@ -1043,7 +1094,10 @@ class _Legend extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 10, height: 10, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+        Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
         const SizedBox(width: 8),
         Text(label, style: const TextStyle(color: Color(0xFF334155))),
       ],
@@ -1300,7 +1354,8 @@ class _ListPanel extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             footer,
-            style: const TextStyle(color: Color(0xFF2563EB), fontWeight: FontWeight.w700),
+            style: const TextStyle(
+                color: Color(0xFF2563EB), fontWeight: FontWeight.w700),
           ),
         ],
       ),
@@ -1344,12 +1399,15 @@ class _AlertItem extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(subtitle, style: const TextStyle(color: Color(0xFF64748B), fontSize: 13)),
+                Text(subtitle,
+                    style: const TextStyle(
+                        color: Color(0xFF64748B), fontSize: 13)),
               ],
             ),
           ),
           const SizedBox(width: 10),
-          Text(time, style: const TextStyle(color: Color(0xFF64748B), fontSize: 12)),
+          Text(time,
+              style: const TextStyle(color: Color(0xFF64748B), fontSize: 12)),
         ],
       ),
     );
@@ -1378,7 +1436,11 @@ class _ActivityItem extends StatelessWidget {
         children: [
           Column(
             children: [
-              Container(width: 10, height: 10, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+              Container(
+                  width: 10,
+                  height: 10,
+                  decoration:
+                      BoxDecoration(color: color, shape: BoxShape.circle)),
               Container(width: 1, height: 44, color: const Color(0xFFD7DEEA)),
             ],
           ),
@@ -1395,12 +1457,15 @@ class _ActivityItem extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(subtitle, style: const TextStyle(color: Color(0xFF64748B), fontSize: 13)),
+                Text(subtitle,
+                    style: const TextStyle(
+                        color: Color(0xFF64748B), fontSize: 13)),
               ],
             ),
           ),
           const SizedBox(width: 10),
-          Text(time, style: const TextStyle(color: Color(0xFF64748B), fontSize: 12)),
+          Text(time,
+              style: const TextStyle(color: Color(0xFF64748B), fontSize: 12)),
         ],
       ),
     );
@@ -1443,13 +1508,47 @@ class _QuickNavPanel extends StatelessWidget {
                 mainAxisSpacing: 12,
                 physics: const NeverScrollableScrollPhysics(),
                 childAspectRatio: aspectRatio,
-                children: const [
-                  _QuickNavTile(icon: Icons.cloud_upload_outlined, label: 'File Upload', color: Color(0xFF2F80ED)),
-                  _QuickNavTile(icon: Icons.apartment_outlined, label: 'Plant Update', color: Color(0xFF4CAF50)),
-                  _QuickNavTile(icon: Icons.calendar_month_outlined, label: 'Schedule Update', color: Color(0xFF6B5DD3)),
-                  _QuickNavTile(icon: Icons.storage_outlined, label: 'Master Data', color: Color(0xFFF59E0B)),
-                  _QuickNavTile(icon: Icons.table_chart_outlined, label: 'Pivot List', color: Color(0xFF38BDF8)),
-                  _QuickNavTile(icon: Icons.local_shipping_outlined, label: 'Dispatch Update', color: Color(0xFF2F80ED)),
+                children: [
+                  _QuickNavTile(
+                    icon: Icons.cloud_upload_outlined,
+                    label: 'File Upload',
+                    color: const Color(0xFF2F80ED),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const ScheduleUpload(),
+                        ),
+                      );
+                    },
+                  ),
+                  const _QuickNavTile(
+                      icon: Icons.apartment_outlined,
+                      label: 'Plant Update',
+                      color: Color(0xFF4CAF50)),
+                  _QuickNavTile(
+                    icon: Icons.calendar_month_outlined,
+                    label: 'Schedule Update',
+                    color: const Color(0xFF6B5DD3),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const ScheduleSheet(),
+                        ),
+                      );
+                    },
+                  ),
+                  const _QuickNavTile(
+                      icon: Icons.storage_outlined,
+                      label: 'Master Data',
+                      color: Color(0xFFF59E0B)),
+                  const _QuickNavTile(
+                      icon: Icons.table_chart_outlined,
+                      label: 'Pivot List',
+                      color: Color(0xFF38BDF8)),
+                  const _QuickNavTile(
+                      icon: Icons.local_shipping_outlined,
+                      label: 'Dispatch Update',
+                      color: Color(0xFF2F80ED)),
                 ],
               );
             },
@@ -1458,7 +1557,8 @@ class _QuickNavPanel extends StatelessWidget {
           const Center(
             child: Text(
               'Go to Dedicated Dashboard →',
-              style: TextStyle(color: Color(0xFF2563EB), fontWeight: FontWeight.w700),
+              style: TextStyle(
+                  color: Color(0xFF2563EB), fontWeight: FontWeight.w700),
             ),
           ),
         ],
@@ -1472,35 +1572,44 @@ class _QuickNavTile extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.color,
+    this.onTap,
   });
 
   final IconData icon;
   final String label;
   final Color color;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFBFDFF),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFDCE4F2)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 42, color: color),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Color(0xFF0F172A),
-              fontWeight: FontWeight.w500,
-            ),
+        child: Ink(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFBFDFF),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFDCE4F2)),
           ),
-        ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 42, color: color),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Color(0xFF0F172A),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
