@@ -1,6 +1,7 @@
 // ui_builder:runtime_text_overrides=true
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 import 'package:flutter/material.dart';
+import '../../screens/dashboard/dispatcher_dashboard.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -172,7 +173,13 @@ class Login extends StatelessWidget {
                           ),
                           SizedBox(height: 18),
                           FilledButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (_) => const DispatcherDashboard(),
+                                ),
+                              );
+                            },
                             style: FilledButton.styleFrom(
                               backgroundColor: Color(0xFF111827),
                               foregroundColor: Colors.white,

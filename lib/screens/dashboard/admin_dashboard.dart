@@ -2,14 +2,14 @@
 // ui_builder:editable=true
 import 'package:flutter/material.dart';
 
-class Billing extends StatelessWidget {
-  const Billing({super.key});
+class AdminDashboard extends StatelessWidget {
+  const AdminDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('billing.dart'),
+        child: Text('admin.dart'),
       ),
     );
   }
