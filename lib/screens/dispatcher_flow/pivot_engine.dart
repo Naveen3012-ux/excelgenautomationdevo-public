@@ -2,7 +2,11 @@
 // ui_builder:editable=true
 import 'dart:math' as math;
 
+import 'package:excelgenautomationdevo/screens/common/master_data.dart';
+import 'package:excelgenautomationdevo/screens/dashboard/dispatcher_dashboard.dart';
 import 'package:flutter/material.dart';
+
+import 'dispatcher_shell.dart';
 
 class PivotEngine extends StatelessWidget {
   const PivotEngine({super.key});
@@ -88,48 +92,48 @@ class PivotEngine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DispatcherScaffold(
+      currentItem: DispatcherNavItem.pivot,
       backgroundColor: const Color(0xFFF5F7FB),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isDesktop = constraints.maxWidth >= 1320;
-            final showSidebar = constraints.maxWidth >= 1180;
+      onItemSelected: (item) => _handleNavigation(context, item),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isDesktop = constraints.maxWidth >= 1320;
 
-            final page = SingleChildScrollView(
-              padding: EdgeInsets.all(isDesktop ? 18 : 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _PivotHeader(isDesktop: isDesktop),
-                  const SizedBox(height: 16),
-                  _ActionBar(isDesktop: isDesktop),
-                  const SizedBox(height: 16),
-                  _FilterAndStatsSection(isDesktop: isDesktop),
-                  const SizedBox(height: 16),
-                  _BottomSection(isDesktop: isDesktop),
-                ],
-              ),
-            );
-
-            if (!showSidebar) {
-              return page;
-            }
-
-            return Row(
+          return SingleChildScrollView(
+            padding: EdgeInsets.all(isDesktop ? 18 : 12),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const _PivotSidebar(),
-                Expanded(child: page),
+                _PivotHeader(isDesktop: isDesktop),
+                const SizedBox(height: 16),
+                _ActionBar(isDesktop: isDesktop),
+                const SizedBox(height: 16),
+                _FilterAndStatsSection(isDesktop: isDesktop),
+                const SizedBox(height: 16),
+                _BottomSection(isDesktop: isDesktop),
               ],
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
+
+  void _handleNavigation(BuildContext context, DispatcherNavItem item) {
+    if (item == DispatcherNavItem.pivot) return;
+
+    final page = switch (item) {
+      DispatcherNavItem.master => const MasterData(),
+      DispatcherNavItem.dashboard => const DispatcherDashboard(),
+      DispatcherNavItem.pivot => const PivotEngine(),
+    };
+
+    navigateWithDispatcherTransition(context, page);
+  }
 }
 
+// ignore: unused_element
 class _PivotSidebar extends StatelessWidget {
   const _PivotSidebar();
 

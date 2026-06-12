@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:excelgenautomationdevo/screens/common/master_data.dart';
+import 'package:excelgenautomationdevo/screens/dispatcher_flow/dispatcher_shell.dart';
 import 'package:excelgenautomationdevo/screens/dispatcher_flow/pivot_engine.dart';
 import 'package:excelgenautomationdevo/screens/dispatcher_flow/schedule_sheet.dart';
 import 'package:excelgenautomationdevo/screens/dispatcher_flow/schedule_upload.dart';
@@ -9,68 +10,68 @@ class DispatcherDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isCompact = constraints.maxWidth < 700;
-            final isMedium =
-                constraints.maxWidth >= 700 && constraints.maxWidth < 1100;
-            final isWide = constraints.maxWidth >= 1100;
+    return DispatcherScaffold(
+      currentItem: DispatcherNavItem.dashboard,
+      onItemSelected: (item) => _handleNavigation(context, item),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isCompact = constraints.maxWidth < 700;
+          final isMedium =
+              constraints.maxWidth >= 700 && constraints.maxWidth < 1100;
+          final isWide = constraints.maxWidth >= 1100;
 
-            final content = Padding(
-              padding: EdgeInsets.all(isWide
-                  ? 16
-                  : isCompact
-                      ? 10
-                      : 12),
-              child: Column(
-                children: [
-                  _TopBar(isWide: isWide, isCompact: isCompact),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _WelcomeHeader(isWide: isWide, isCompact: isCompact),
-                          const SizedBox(height: 16),
-                          _StatsRow(isWide: isWide, isCompact: isCompact),
-                          const SizedBox(height: 16),
-                          _OverviewGrid(
-                            isWide: isWide,
-                            isMedium: isMedium,
-                            isCompact: isCompact,
-                          ),
-                          const SizedBox(height: 16),
-                          _BottomGrid(isWide: isWide, isMedium: isMedium),
-                        ],
-                      ),
+          return Padding(
+            padding: EdgeInsets.all(isWide
+                ? 16
+                : isCompact
+                    ? 10
+                    : 12),
+            child: Column(
+              children: [
+                _TopBar(isWide: isWide, isCompact: isCompact),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _WelcomeHeader(isWide: isWide, isCompact: isCompact),
+                        const SizedBox(height: 16),
+                        _StatsRow(isWide: isWide, isCompact: isCompact),
+                        const SizedBox(height: 16),
+                        _OverviewGrid(
+                          isWide: isWide,
+                          isMedium: isMedium,
+                          isCompact: isCompact,
+                        ),
+                        const SizedBox(height: 16),
+                        _BottomGrid(isWide: isWide, isMedium: isMedium),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            );
-
-            if (!isWide) {
-              return content;
-            }
-
-            return Row(
-              children: [
-                const SizedBox(width: 16),
-                const _Sidebar(),
-                Expanded(child: content),
+                ),
               ],
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
+
+  void _handleNavigation(BuildContext context, DispatcherNavItem item) {
+    if (item == DispatcherNavItem.dashboard) return;
+
+    final page = switch (item) {
+      DispatcherNavItem.master => const MasterData(),
+      DispatcherNavItem.dashboard => const DispatcherDashboard(),
+      DispatcherNavItem.pivot => const PivotEngine(),
+    };
+
+    navigateWithDispatcherTransition(context, page);
+  }
 }
 
+// ignore: unused_element
 class _Sidebar extends StatelessWidget {
   const _Sidebar();
 

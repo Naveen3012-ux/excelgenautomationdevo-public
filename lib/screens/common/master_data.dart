@@ -1,3 +1,6 @@
+import 'package:excelgenautomationdevo/screens/dashboard/dispatcher_dashboard.dart';
+import 'package:excelgenautomationdevo/screens/dispatcher_flow/dispatcher_shell.dart';
+import 'package:excelgenautomationdevo/screens/dispatcher_flow/pivot_engine.dart';
 import 'package:flutter/material.dart';
 
 class MasterData extends StatefulWidget {
@@ -203,65 +206,69 @@ class _MasterDataState extends State<MasterData> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isWide = constraints.maxWidth >= 1280;
-            final isMedium = constraints.maxWidth >= 900;
+    return DispatcherScaffold(
+      currentItem: DispatcherNavItem.master,
+      onItemSelected: (item) => _handleNavigation(context, item),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth >= 1280;
+          final isMedium = constraints.maxWidth >= 900;
 
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (isWide) const _MasterSidebar(),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(isWide ? 18 : 12),
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 1700),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _MasterTopBar(isWide: isWide),
-                            const SizedBox(height: 18),
-                            _MasterToolbar(
-                              selectedSheet: selectedSheet,
-                              onSheetChanged: (value) {
-                                if (value == null) return;
-                                setState(() => selectedSheet = value);
-                              },
-                              isMedium: isMedium,
-                            ),
-                            const SizedBox(height: 18),
-                            const _MasterTableCard(
-                              columns: _columns,
-                              rows: _rows,
-                            ),
-                            const SizedBox(height: 18),
-                            _MasterFooter(
-                              selectedRowsPerPage: selectedRowsPerPage,
-                              onRowsPerPageChanged: (value) {
-                                if (value == null) return;
-                                setState(() => selectedRowsPerPage = value);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+          return SingleChildScrollView(
+            padding: EdgeInsets.all(isWide ? 18 : 12),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1700),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _MasterTopBar(isWide: isWide),
+                    const SizedBox(height: 18),
+                    _MasterToolbar(
+                      selectedSheet: selectedSheet,
+                      onSheetChanged: (value) {
+                        if (value == null) return;
+                        setState(() => selectedSheet = value);
+                      },
+                      isMedium: isMedium,
                     ),
-                  ),
+                    const SizedBox(height: 18),
+                    const _MasterTableCard(
+                      columns: _columns,
+                      rows: _rows,
+                    ),
+                    const SizedBox(height: 18),
+                    _MasterFooter(
+                      selectedRowsPerPage: selectedRowsPerPage,
+                      onRowsPerPageChanged: (value) {
+                        if (value == null) return;
+                        setState(() => selectedRowsPerPage = value);
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
+
+  void _handleNavigation(BuildContext context, DispatcherNavItem item) {
+    if (item == DispatcherNavItem.master) return;
+
+    final page = switch (item) {
+      DispatcherNavItem.master => const MasterData(),
+      DispatcherNavItem.dashboard => const DispatcherDashboard(),
+      DispatcherNavItem.pivot => const PivotEngine(),
+    };
+
+    navigateWithDispatcherTransition(context, page);
+  }
 }
 
+// ignore: unused_element
 class _MasterSidebar extends StatelessWidget {
   const _MasterSidebar();
 

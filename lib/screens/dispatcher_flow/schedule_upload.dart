@@ -1,4 +1,9 @@
+import 'package:excelgenautomationdevo/screens/common/master_data.dart';
+import 'package:excelgenautomationdevo/screens/dashboard/dispatcher_dashboard.dart';
+import 'package:excelgenautomationdevo/screens/dispatcher_flow/pivot_engine.dart';
 import 'package:flutter/material.dart';
+
+import 'dispatcher_shell.dart';
 
 class ScheduleUpload extends StatefulWidget {
   const ScheduleUpload({super.key});
@@ -20,159 +25,142 @@ class _ScheduleUploadState extends State<ScheduleUpload> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isWide = constraints.maxWidth >= 1180;
-            final isMedium = constraints.maxWidth >= 860;
+    return DispatcherScaffold(
+      currentItem: DispatcherNavItem.dashboard,
+      onItemSelected: (item) => _handleNavigation(context, item),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth >= 1180;
+          final isMedium = constraints.maxWidth >= 860;
 
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (isWide) const _ScheduleSidebar(),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(isWide ? 20 : 14),
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 1480),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _ScheduleTopBar(isWide: isWide),
-                            const SizedBox(height: 18),
-                            const Text(
-                              'Upload your files to process dispatch operations.',
-                              style: TextStyle(
-                                color: Color(0xFF475569),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 18),
-                            _SummaryRow(isMedium: isMedium),
-                            const SizedBox(height: 18),
-                            isMedium
-                                ? Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 5,
-                                        child: _UploadDropZoneCard(
-                                          isWide: isWide,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 18),
-                                      Expanded(
-                                        flex: 3,
-                                        child: _ConfigurationCard(
-                                          uploadType: uploadType,
-                                          plant: plant,
-                                          month: month,
-                                          fileCategory: fileCategory,
-                                          processingRule: processingRule,
-                                          validateBeforeUpload:
-                                              validateBeforeUpload,
-                                          autoProcessAfterUpload:
-                                              autoProcessAfterUpload,
-                                          sendEmailNotification:
-                                              sendEmailNotification,
-                                          onUploadTypeChanged: (value) =>
-                                              setState(
-                                                  () => uploadType = value!),
-                                          onPlantChanged: (value) =>
-                                              setState(() => plant = value!),
-                                          onMonthChanged: (value) =>
-                                              setState(() => month = value!),
-                                          onFileCategoryChanged: (value) =>
-                                              setState(
-                                                  () => fileCategory = value!),
-                                          onProcessingRuleChanged: (value) =>
-                                              setState(() =>
-                                                  processingRule = value!),
-                                          onValidateChanged: (value) =>
-                                              setState(() =>
-                                                  validateBeforeUpload =
-                                                      value ?? false),
-                                          onAutoProcessChanged: (value) =>
-                                              setState(() =>
-                                                  autoProcessAfterUpload =
-                                                      value ?? false),
-                                          onEmailChanged: (value) => setState(
-                                              () => sendEmailNotification =
-                                                  value ?? false),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 18),
-                                      const Expanded(
-                                        flex: 3,
-                                        child: _UploadStatusCard(),
-                                      ),
-                                    ],
-                                  )
-                                : Column(
-                                    children: [
-                                      _UploadDropZoneCard(isWide: isWide),
-                                      const SizedBox(height: 16),
-                                      _ConfigurationCard(
-                                        uploadType: uploadType,
-                                        plant: plant,
-                                        month: month,
-                                        fileCategory: fileCategory,
-                                        processingRule: processingRule,
-                                        validateBeforeUpload:
-                                            validateBeforeUpload,
-                                        autoProcessAfterUpload:
-                                            autoProcessAfterUpload,
-                                        sendEmailNotification:
-                                            sendEmailNotification,
-                                        onUploadTypeChanged: (value) =>
-                                            setState(() => uploadType = value!),
-                                        onPlantChanged: (value) =>
-                                            setState(() => plant = value!),
-                                        onMonthChanged: (value) =>
-                                            setState(() => month = value!),
-                                        onFileCategoryChanged: (value) =>
-                                            setState(
-                                                () => fileCategory = value!),
-                                        onProcessingRuleChanged: (value) =>
-                                            setState(
-                                                () => processingRule = value!),
-                                        onValidateChanged: (value) => setState(
-                                            () => validateBeforeUpload =
-                                                value ?? false),
-                                        onAutoProcessChanged: (value) =>
-                                            setState(() =>
-                                                autoProcessAfterUpload =
-                                                    value ?? false),
-                                        onEmailChanged: (value) => setState(
-                                            () => sendEmailNotification =
-                                                value ?? false),
-                                      ),
-                                      const SizedBox(height: 16),
-                                      const _UploadStatusCard(),
-                                    ],
-                                  ),
-                            const SizedBox(height: 18),
-                            const _UploadedHistoryCard(),
-                          ],
-                        ),
+          return SingleChildScrollView(
+            padding: EdgeInsets.all(isWide ? 20 : 14),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1480),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _ScheduleTopBar(isWide: isWide),
+                    const SizedBox(height: 18),
+                    const Text(
+                      'Upload your files to process dispatch operations.',
+                      style: TextStyle(
+                        color: Color(0xFF475569),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 18),
+                    _SummaryRow(isMedium: isMedium),
+                    const SizedBox(height: 18),
+                    isMedium
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                child: _UploadDropZoneCard(
+                                  isWide: isWide,
+                                ),
+                              ),
+                              const SizedBox(width: 18),
+                              Expanded(
+                                flex: 3,
+                                child: _ConfigurationCard(
+                                  uploadType: uploadType,
+                                  plant: plant,
+                                  month: month,
+                                  fileCategory: fileCategory,
+                                  processingRule: processingRule,
+                                  validateBeforeUpload: validateBeforeUpload,
+                                  autoProcessAfterUpload:
+                                      autoProcessAfterUpload,
+                                  sendEmailNotification: sendEmailNotification,
+                                  onUploadTypeChanged: (value) =>
+                                      setState(() => uploadType = value!),
+                                  onPlantChanged: (value) =>
+                                      setState(() => plant = value!),
+                                  onMonthChanged: (value) =>
+                                      setState(() => month = value!),
+                                  onFileCategoryChanged: (value) =>
+                                      setState(() => fileCategory = value!),
+                                  onProcessingRuleChanged: (value) =>
+                                      setState(() => processingRule = value!),
+                                  onValidateChanged: (value) => setState(() =>
+                                      validateBeforeUpload = value ?? false),
+                                  onAutoProcessChanged: (value) => setState(
+                                      () => autoProcessAfterUpload =
+                                          value ?? false),
+                                  onEmailChanged: (value) => setState(() =>
+                                      sendEmailNotification = value ?? false),
+                                ),
+                              ),
+                              const SizedBox(width: 18),
+                              const Expanded(
+                                flex: 3,
+                                child: _UploadStatusCard(),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              _UploadDropZoneCard(isWide: isWide),
+                              const SizedBox(height: 16),
+                              _ConfigurationCard(
+                                uploadType: uploadType,
+                                plant: plant,
+                                month: month,
+                                fileCategory: fileCategory,
+                                processingRule: processingRule,
+                                validateBeforeUpload: validateBeforeUpload,
+                                autoProcessAfterUpload: autoProcessAfterUpload,
+                                sendEmailNotification: sendEmailNotification,
+                                onUploadTypeChanged: (value) =>
+                                    setState(() => uploadType = value!),
+                                onPlantChanged: (value) =>
+                                    setState(() => plant = value!),
+                                onMonthChanged: (value) =>
+                                    setState(() => month = value!),
+                                onFileCategoryChanged: (value) =>
+                                    setState(() => fileCategory = value!),
+                                onProcessingRuleChanged: (value) =>
+                                    setState(() => processingRule = value!),
+                                onValidateChanged: (value) => setState(() =>
+                                    validateBeforeUpload = value ?? false),
+                                onAutoProcessChanged: (value) => setState(() =>
+                                    autoProcessAfterUpload = value ?? false),
+                                onEmailChanged: (value) => setState(() =>
+                                    sendEmailNotification = value ?? false),
+                              ),
+                              const SizedBox(height: 16),
+                              const _UploadStatusCard(),
+                            ],
+                          ),
+                    const SizedBox(height: 18),
+                    const _UploadedHistoryCard(),
+                  ],
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
+
+  void _handleNavigation(BuildContext context, DispatcherNavItem item) {
+    final page = switch (item) {
+      DispatcherNavItem.master => const MasterData(),
+      DispatcherNavItem.dashboard => const DispatcherDashboard(),
+      DispatcherNavItem.pivot => const PivotEngine(),
+    };
+
+    navigateWithDispatcherTransition(context, page);
+  }
 }
 
+// ignore: unused_element
 class _ScheduleSidebar extends StatelessWidget {
   const _ScheduleSidebar();
 

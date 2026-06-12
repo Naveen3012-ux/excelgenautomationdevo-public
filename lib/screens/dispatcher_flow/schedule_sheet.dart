@@ -1,4 +1,9 @@
+import 'package:excelgenautomationdevo/screens/common/master_data.dart';
+import 'package:excelgenautomationdevo/screens/dashboard/dispatcher_dashboard.dart';
+import 'package:excelgenautomationdevo/screens/dispatcher_flow/pivot_engine.dart';
 import 'package:flutter/material.dart';
+
+import 'dispatcher_shell.dart';
 
 class ScheduleSheet extends StatefulWidget {
   const ScheduleSheet({super.key});
@@ -152,116 +157,117 @@ class _ScheduleSheetState extends State<ScheduleSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final isWide = constraints.maxWidth >= 1300;
-            final isMedium = constraints.maxWidth >= 900;
+    return DispatcherScaffold(
+      currentItem: DispatcherNavItem.dashboard,
+      onItemSelected: (item) => _handleNavigation(context, item),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth >= 1300;
+          final isMedium = constraints.maxWidth >= 900;
 
-            return Row(
+          return SingleChildScrollView(
+            padding: EdgeInsets.all(isWide ? 18 : 12),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (isWide) const _ScheduleSidebar(),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(isWide ? 18 : 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _Header(isWide: isWide),
-                        const SizedBox(height: 16),
-                        _Toolbar(isWide: isWide),
-                        const SizedBox(height: 16),
-                        isWide
-                            ? Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 5,
-                                    child: Column(
-                                      children: [
-                                        _FiltersCard(
-                                          selectedPlant: selectedPlant,
-                                          selectedVendor: selectedVendor,
-                                          selectedMonth: selectedMonth,
-                                          selectedStatus: selectedStatus,
-                                          selectedCategory: selectedCategory,
-                                          onPlantChanged: (value) => setState(
-                                              () => selectedPlant = value!),
-                                          onVendorChanged: (value) => setState(
-                                              () => selectedVendor = value!),
-                                          onMonthChanged: (value) => setState(
-                                              () => selectedMonth = value!),
-                                          onStatusChanged: (value) => setState(
-                                              () => selectedStatus = value!),
-                                          onCategoryChanged: (value) =>
-                                              setState(() =>
-                                                  selectedCategory = value!),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        const _ScheduleTableCard(rows: _rows),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  SizedBox(
-                                    width: 310,
-                                    child: _RecordDetailsPanel(
-                                      showDetailsTab: showDetailsTab,
-                                      onTabChanged: (value) {
-                                        setState(() => showDetailsTab = value);
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  _FiltersCard(
-                                    selectedPlant: selectedPlant,
-                                    selectedVendor: selectedVendor,
-                                    selectedMonth: selectedMonth,
-                                    selectedStatus: selectedStatus,
-                                    selectedCategory: selectedCategory,
-                                    onPlantChanged: (value) =>
-                                        setState(() => selectedPlant = value!),
-                                    onVendorChanged: (value) =>
-                                        setState(() => selectedVendor = value!),
-                                    onMonthChanged: (value) =>
-                                        setState(() => selectedMonth = value!),
-                                    onStatusChanged: (value) =>
-                                        setState(() => selectedStatus = value!),
-                                    onCategoryChanged: (value) => setState(
-                                        () => selectedCategory = value!),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  const _ScheduleTableCard(rows: _rows),
-                                  if (isMedium) ...[
-                                    const SizedBox(height: 16),
-                                    _RecordDetailsPanel(
-                                      showDetailsTab: showDetailsTab,
-                                      onTabChanged: (value) {
-                                        setState(() => showDetailsTab = value);
-                                      },
-                                    ),
-                                  ],
-                                ],
-                              ),
-                      ],
-                    ),
-                  ),
-                ),
+                _Header(isWide: isWide),
+                const SizedBox(height: 16),
+                _Toolbar(isWide: isWide),
+                const SizedBox(height: 16),
+                isWide
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Column(
+                              children: [
+                                _FiltersCard(
+                                  selectedPlant: selectedPlant,
+                                  selectedVendor: selectedVendor,
+                                  selectedMonth: selectedMonth,
+                                  selectedStatus: selectedStatus,
+                                  selectedCategory: selectedCategory,
+                                  onPlantChanged: (value) =>
+                                      setState(() => selectedPlant = value!),
+                                  onVendorChanged: (value) =>
+                                      setState(() => selectedVendor = value!),
+                                  onMonthChanged: (value) =>
+                                      setState(() => selectedMonth = value!),
+                                  onStatusChanged: (value) =>
+                                      setState(() => selectedStatus = value!),
+                                  onCategoryChanged: (value) =>
+                                      setState(() => selectedCategory = value!),
+                                ),
+                                const SizedBox(height: 16),
+                                const _ScheduleTableCard(rows: _rows),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          SizedBox(
+                            width: 310,
+                            child: _RecordDetailsPanel(
+                              showDetailsTab: showDetailsTab,
+                              onTabChanged: (value) {
+                                setState(() => showDetailsTab = value);
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          _FiltersCard(
+                            selectedPlant: selectedPlant,
+                            selectedVendor: selectedVendor,
+                            selectedMonth: selectedMonth,
+                            selectedStatus: selectedStatus,
+                            selectedCategory: selectedCategory,
+                            onPlantChanged: (value) =>
+                                setState(() => selectedPlant = value!),
+                            onVendorChanged: (value) =>
+                                setState(() => selectedVendor = value!),
+                            onMonthChanged: (value) =>
+                                setState(() => selectedMonth = value!),
+                            onStatusChanged: (value) =>
+                                setState(() => selectedStatus = value!),
+                            onCategoryChanged: (value) =>
+                                setState(() => selectedCategory = value!),
+                          ),
+                          const SizedBox(height: 16),
+                          const _ScheduleTableCard(rows: _rows),
+                          if (isMedium) ...[
+                            const SizedBox(height: 16),
+                            _RecordDetailsPanel(
+                              showDetailsTab: showDetailsTab,
+                              onTabChanged: (value) {
+                                setState(() => showDetailsTab = value);
+                              },
+                            ),
+                          ],
+                        ],
+                      ),
               ],
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
+
+  void _handleNavigation(BuildContext context, DispatcherNavItem item) {
+    final page = switch (item) {
+      DispatcherNavItem.master => const MasterData(),
+      DispatcherNavItem.dashboard => const DispatcherDashboard(),
+      DispatcherNavItem.pivot => const PivotEngine(),
+    };
+
+    navigateWithDispatcherTransition(context, page);
+  }
 }
 
+// ignore: unused_element
 class _ScheduleSidebar extends StatelessWidget {
   const _ScheduleSidebar();
 
