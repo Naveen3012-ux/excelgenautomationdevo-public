@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 import 'package:flutter/material.dart';
 
-import '../dashboard/dispatcher_dashboard.dart';
+import 'role_selection_screen.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -144,7 +144,8 @@ class Login extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                      builder: (_) => const DispatcherDashboard(),
+                                      builder: (_) =>
+                                          const RoleSelectionScreen(),
                                     ),
                                   );
                                 },

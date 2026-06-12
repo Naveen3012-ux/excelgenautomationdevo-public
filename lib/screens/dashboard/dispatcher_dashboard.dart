@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:excelgenautomationdevo/screens/common/master_data.dart';
+import 'package:excelgenautomationdevo/screens/dispatcher_flow/pivot_engine.dart';
 import 'package:excelgenautomationdevo/screens/dispatcher_flow/schedule_sheet.dart';
 import 'package:excelgenautomationdevo/screens/dispatcher_flow/schedule_upload.dart';
 
@@ -1537,14 +1539,30 @@ class _QuickNavPanel extends StatelessWidget {
                       );
                     },
                   ),
-                  const _QuickNavTile(
-                      icon: Icons.storage_outlined,
-                      label: 'Master Data',
-                      color: Color(0xFFF59E0B)),
-                  const _QuickNavTile(
-                      icon: Icons.table_chart_outlined,
-                      label: 'Pivot List',
-                      color: Color(0xFF38BDF8)),
+                  _QuickNavTile(
+                    icon: Icons.storage_outlined,
+                    label: 'Master Data',
+                    color: const Color(0xFFF59E0B),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const MasterData(),
+                        ),
+                      );
+                    },
+                  ),
+                  _QuickNavTile(
+                    icon: Icons.table_chart_outlined,
+                    label: 'Pivot Summary',
+                    color: const Color(0xFF38BDF8),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const PivotEngine(),
+                        ),
+                      );
+                    },
+                  ),
                   const _QuickNavTile(
                       icon: Icons.local_shipping_outlined,
                       label: 'Dispatch Update',
