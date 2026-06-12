@@ -10,26 +10,32 @@ class DispatcherDashboard extends StatelessWidget {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
+            final isCompact = constraints.maxWidth < 700;
+            final isMedium = constraints.maxWidth >= 700 && constraints.maxWidth < 1100;
             final isWide = constraints.maxWidth >= 1100;
 
             final content = Padding(
-              padding: EdgeInsets.all(isWide ? 16 : 12),
+              padding: EdgeInsets.all(isWide ? 16 : isCompact ? 10 : 12),
               child: Column(
                 children: [
-                  _TopBar(isWide: isWide),
+                  _TopBar(isWide: isWide, isCompact: isCompact),
                   const SizedBox(height: 16),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _WelcomeHeader(isWide: isWide),
+                          _WelcomeHeader(isWide: isWide, isCompact: isCompact),
                           const SizedBox(height: 16),
-                          _StatsRow(isWide: isWide),
+                          _StatsRow(isWide: isWide, isCompact: isCompact),
                           const SizedBox(height: 16),
-                          _OverviewGrid(isWide: isWide),
+                          _OverviewGrid(
+                            isWide: isWide,
+                            isMedium: isMedium,
+                            isCompact: isCompact,
+                          ),
                           const SizedBox(height: 16),
-                          _BottomGrid(isWide: isWide),
+                          _BottomGrid(isWide: isWide, isMedium: isMedium),
                         ],
                       ),
                     ),
@@ -72,31 +78,33 @@ class _Sidebar extends StatelessWidget {
         ),
         borderRadius: BorderRadius.all(Radius.circular(26)),
       ),
-      child: Column(
-        children: [
-          const SizedBox(height: 18),
-          _BrandRow(),
-          const SizedBox(height: 18),
-          const _ProfileCard(),
-          const SizedBox(height: 18),
-          ...[
-            const _SidebarItem(icon: Icons.dashboard_outlined, label: 'Dashboard', selected: true),
-            const _SidebarItem(icon: Icons.upload_file_outlined, label: 'File Upload'),
-            const _SidebarItem(icon: Icons.apartment_outlined, label: 'Plant Update'),
-            const _SidebarItem(icon: Icons.calendar_month_outlined, label: 'Schedule Update'),
-            const _SidebarItem(icon: Icons.dataset_outlined, label: 'Master Data'),
-            const _SidebarItem(icon: Icons.grid_view_outlined, label: 'Pivot List'),
-            const _SidebarItem(icon: Icons.local_shipping_outlined, label: 'Dispatch Update'),
-            const _SidebarItem(icon: Icons.dashboard_customize_outlined, label: 'Dedicated Dashboard'),
-          ].map((item) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                child: item,
-              )),
-          const Spacer(),
-          const Divider(color: Color(0x33FFFFFF), height: 1),
-          const SizedBox(height: 12),
-          const _SidebarFooter(),
-        ],
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(top: 18, bottom: 18),
+        child: Column(
+          children: [
+            _BrandRow(),
+            const SizedBox(height: 18),
+            const _ProfileCard(),
+            const SizedBox(height: 18),
+            ...[
+              const _SidebarItem(icon: Icons.dashboard_outlined, label: 'Dashboard', selected: true),
+              const _SidebarItem(icon: Icons.upload_file_outlined, label: 'File Upload'),
+              const _SidebarItem(icon: Icons.apartment_outlined, label: 'Plant Update'),
+              const _SidebarItem(icon: Icons.calendar_month_outlined, label: 'Schedule Update'),
+              const _SidebarItem(icon: Icons.dataset_outlined, label: 'Master Data'),
+              const _SidebarItem(icon: Icons.grid_view_outlined, label: 'Pivot List'),
+              const _SidebarItem(icon: Icons.local_shipping_outlined, label: 'Dispatch Update'),
+              const _SidebarItem(icon: Icons.dashboard_customize_outlined, label: 'Dedicated Dashboard'),
+            ].map((item) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  child: item,
+                )),
+            const SizedBox(height: 18),
+            const Divider(color: Color(0x33FFFFFF), height: 1),
+            const SizedBox(height: 12),
+            const _SidebarFooter(),
+          ],
+        ),
       ),
     );
   }
@@ -274,91 +282,60 @@ class _Badge extends StatelessWidget {
 }
 
 class _TopBar extends StatelessWidget {
-  const _TopBar({required this.isWide});
+  const _TopBar({required this.isWide, required this.isCompact});
 
   final bool isWide;
+  final bool isCompact;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE5EAF2)),
+    final title = Text(
+      'Dashboard',
+      style: TextStyle(
+        fontSize: isCompact ? 18 : 22,
+        fontWeight: FontWeight.w700,
+        color: const Color(0xFF0F172A),
       ),
-      child: Row(
-        children: [
-          const Icon(Icons.menu_rounded, color: Color(0xFF1E293B)),
-          const SizedBox(width: 14),
-          const Text(
-            'Dashboard',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF0F172A),
-            ),
-          ),
-          const SizedBox(width: 16),
-          if (isWide) ...[
-            Expanded(
-              child: Container(
-                height: 38,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF8FAFF),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: const Color(0xFFD7DEEA)),
-                ),
-                child: const Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Search PR No, Dispatch No, Vendor, Plant...',
-                        style: TextStyle(color: Color(0xFF64748B), fontSize: 13),
-                      ),
-                    ),
-                    Icon(Icons.search_rounded, color: Color(0xFF64748B)),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 18),
-          ],
-          _IconCircle(
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                const Icon(Icons.notifications_none_rounded, color: Color(0xFF1E293B)),
-                Positioned(
-                  right: -2,
-                  top: -2,
-                  child: Container(
-                    width: 16,
-                    height: 16,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFE74C3C),
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      '8',
-                      style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700),
-                    ),
+    );
+
+    final userRow = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _IconCircle(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const Icon(Icons.notifications_none_rounded, color: Color(0xFF1E293B)),
+              Positioned(
+                right: -2,
+                top: -2,
+                child: Container(
+                  width: 16,
+                  height: 16,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFE74C3C),
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    '8',
+                    style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          const CircleAvatar(
-            radius: 17,
-            backgroundColor: Color(0xFF0F2F6F),
-            child: Text(
-              'DU',
-              style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
-            ),
+        ),
+        const SizedBox(width: 12),
+        const CircleAvatar(
+          radius: 17,
+          backgroundColor: Color(0xFF0F2F6F),
+          child: Text(
+            'DU',
+            style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
           ),
+        ),
+        if (!isCompact) ...[
           const SizedBox(width: 10),
           const Text(
             'Dispatch User',
@@ -366,6 +343,73 @@ class _TopBar extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           const Icon(Icons.keyboard_arrow_down_rounded, color: Color(0xFF64748B)),
+        ],
+      ],
+    );
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFE5EAF2)),
+      ),
+      child: isCompact
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.menu_rounded, color: Color(0xFF1E293B)),
+                    const SizedBox(width: 12),
+                    Expanded(child: title),
+                    userRow,
+                  ],
+                ),
+                const SizedBox(height: 12),
+                const _SearchBox(),
+              ],
+            )
+          : Row(
+              children: [
+                const Icon(Icons.menu_rounded, color: Color(0xFF1E293B)),
+                const SizedBox(width: 14),
+                title,
+                const SizedBox(width: 16),
+                if (isWide) ...[
+                  const Expanded(child: _SearchBox()),
+                  const SizedBox(width: 18),
+                ],
+                userRow,
+              ],
+            ),
+    );
+  }
+}
+
+class _SearchBox extends StatelessWidget {
+  const _SearchBox();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 38,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFF),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFD7DEEA)),
+      ),
+      child: const Row(
+        children: [
+          Expanded(
+            child: Text(
+              'Search PR No, Dispatch No, Vendor, Plant...',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Color(0xFF64748B), fontSize: 13),
+            ),
+          ),
+          Icon(Icons.search_rounded, color: Color(0xFF64748B)),
         ],
       ),
     );
@@ -394,71 +438,88 @@ class _IconCircle extends StatelessWidget {
 }
 
 class _WelcomeHeader extends StatelessWidget {
-  const _WelcomeHeader({required this.isWide});
+  const _WelcomeHeader({required this.isWide, required this.isCompact});
 
   final bool isWide;
+  final bool isCompact;
 
   @override
   Widget build(BuildContext context) {
+    final headline = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Welcome back, Dispatch User!',
+          style: TextStyle(
+            fontSize: isCompact ? 22 : 28,
+            fontWeight: FontWeight.w800,
+            color: const Color(0xFF0F172A),
+          ),
+        ),
+        const SizedBox(height: 6),
+        const Text(
+          'Here\'s what\'s happening with your dispatch operations today.',
+          style: TextStyle(
+            fontSize: 15,
+            color: Color(0xFF64748B),
+          ),
+        ),
+      ],
+    );
+
+    final dateChip = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE1E7F0)),
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.calendar_month_outlined, size: 18, color: Color(0xFF334155)),
+          SizedBox(width: 10),
+          Text(
+            '22 May 2025, Thursday',
+            style: TextStyle(
+              color: Color(0xFF0F172A),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(width: 8),
+          Icon(Icons.keyboard_arrow_down_rounded, color: Color(0xFF64748B)),
+        ],
+      ),
+    );
+
+    if (!isWide) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          headline,
+          if (!isCompact) ...[
+            const SizedBox(height: 12),
+            dateChip,
+          ],
+        ],
+      );
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Welcome back, Dispatch User!',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF0F172A),
-                ),
-              ),
-              SizedBox(height: 6),
-              Text(
-                'Here\'s what\'s happening with your dispatch operations today.',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Color(0xFF64748B),
-                ),
-              ),
-            ],
-          ),
-        ),
-        if (isWide)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFFE1E7F0)),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.calendar_month_outlined, size: 18, color: Color(0xFF334155)),
-                SizedBox(width: 10),
-                Text(
-                  '22 May 2025, Thursday',
-                  style: TextStyle(
-                    color: Color(0xFF0F172A),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(width: 8),
-                Icon(Icons.keyboard_arrow_down_rounded, color: Color(0xFF64748B)),
-              ],
-            ),
-          ),
+        Expanded(child: headline),
+        dateChip,
       ],
     );
   }
 }
 
 class _StatsRow extends StatelessWidget {
-  const _StatsRow({required this.isWide});
+  const _StatsRow({required this.isWide, required this.isCompact});
 
   final bool isWide;
+  final bool isCompact;
 
   @override
   Widget build(BuildContext context) {
@@ -513,7 +574,11 @@ class _StatsRow extends StatelessWidget {
       children: cards
           .map(
             (card) => SizedBox(
-              width: isWide ? null : double.infinity,
+              width: isWide
+                  ? 216
+                  : isCompact
+                      ? double.infinity
+                      : 260,
               child: card,
             ),
           )
@@ -540,7 +605,6 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 216,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -588,9 +652,15 @@ class _StatCard extends StatelessWidget {
 }
 
 class _OverviewGrid extends StatelessWidget {
-  const _OverviewGrid({required this.isWide});
+  const _OverviewGrid({
+    required this.isWide,
+    required this.isMedium,
+    required this.isCompact,
+  });
 
   final bool isWide;
+  final bool isMedium;
+  final bool isCompact;
 
   @override
   Widget build(BuildContext context) {
@@ -621,13 +691,30 @@ class _OverviewGrid extends StatelessWidget {
       ),
     ];
 
-    if (!isWide) {
+    if (isCompact) {
       return Column(
         children: [
           ...children.map((child) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: child,
               )),
+        ],
+      );
+    }
+
+    if (isMedium) {
+      return Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: children[0]),
+              const SizedBox(width: 12),
+              Expanded(child: children[1]),
+            ],
+          ),
+          const SizedBox(height: 12),
+          children[2],
         ],
       );
     }
@@ -719,10 +806,11 @@ class _RingChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final stacked = constraints.maxWidth < 360;
+
+        final chart = SizedBox(
           width: 180,
           height: 180,
           child: Stack(
@@ -796,44 +884,61 @@ class _RingChart extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            children: segments
-                .map(
-                  (segment) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 10,
-                          height: 10,
-                          decoration: BoxDecoration(color: segment.color, shape: BoxShape.circle),
+        );
+
+        final legend = Column(
+          children: segments
+              .map(
+                (segment) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(color: segment.color, shape: BoxShape.circle),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          segment.label,
+                          style: const TextStyle(color: Color(0xFF334155)),
                         ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            segment.label,
-                            style: const TextStyle(color: Color(0xFF334155)),
-                          ),
+                      ),
+                      Text(
+                        segment.value,
+                        style: const TextStyle(
+                          color: Color(0xFF0F172A),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
                         ),
-                        Text(
-                          segment.value,
-                          style: const TextStyle(
-                            color: Color(0xFF0F172A),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                )
-                .toList(),
-          ),
-        ),
-      ],
+                ),
+              )
+              .toList(),
+        );
+
+        if (stacked) {
+          return Column(
+            children: [
+              Center(child: chart),
+              const SizedBox(height: 16),
+              legend,
+            ],
+          );
+        }
+
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            chart,
+            const SizedBox(width: 16),
+            Expanded(child: legend),
+          ],
+        );
+      },
     );
   }
 }
@@ -951,73 +1056,100 @@ class _BillingRingChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 180,
-          height: 180,
-          child: Stack(
-            alignment: Alignment.center,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final stacked = constraints.maxWidth < 320;
+
+        const legend = Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _Legend(color: Color(0xFF6B5DD3), label: 'Billing Completed'),
+            SizedBox(height: 12),
+            _Legend(color: Color(0xFFA77A45), label: 'Billing Not Completed'),
+          ],
+        );
+
+        if (stacked) {
+          return const Column(
             children: [
-              const SizedBox(
-                width: 180,
-                height: 180,
-                child: CircularProgressIndicator(
-                  value: 0.84,
-                  strokeWidth: 18,
-                  backgroundColor: Color(0xFFF1F5F9),
-                  color: Color(0xFF6B5DD3),
+              _BillingRingVisual(),
+              SizedBox(height: 16),
+              legend,
+            ],
+          );
+        }
+
+        return const Row(
+          children: [
+            _BillingRingVisual(),
+            SizedBox(width: 16),
+            Expanded(child: legend),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _BillingRingVisual extends StatelessWidget {
+  const _BillingRingVisual();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 180,
+      height: 180,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          const SizedBox(
+            width: 180,
+            height: 180,
+            child: CircularProgressIndicator(
+              value: 0.84,
+              strokeWidth: 18,
+              backgroundColor: Color(0xFFF1F5F9),
+              color: Color(0xFF6B5DD3),
+            ),
+          ),
+          Transform.rotate(
+            angle: 1.1,
+            child: const SizedBox(
+              width: 110,
+              height: 110,
+              child: CircularProgressIndicator(
+                value: 0.16,
+                strokeWidth: 18,
+                backgroundColor: Colors.transparent,
+                color: Color(0xFFA77A45),
+              ),
+            ),
+          ),
+          const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '950',
+                style: TextStyle(
+                  color: Color(0xFF0F172A),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 24,
                 ),
               ),
-              Transform.rotate(
-                angle: 1.1,
-                child: const SizedBox(
-                  width: 110,
-                  height: 110,
-                  child: CircularProgressIndicator(
-                    value: 0.16,
-                    strokeWidth: 18,
-                    backgroundColor: Colors.transparent,
-                    color: Color(0xFFA77A45),
-                  ),
-                ),
-              ),
-              const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '950',
-                    style: TextStyle(
-                      color: Color(0xFF0F172A),
-                      fontWeight: FontWeight.w800,
-                      fontSize: 24,
-                    ),
-                  ),
-                  Text('Total', style: TextStyle(color: Color(0xFF475569))),
-                ],
-              ),
+              Text('Total', style: TextStyle(color: Color(0xFF475569))),
             ],
           ),
-        ),
-        const SizedBox(width: 16),
-        const Expanded(
-          child: Column(
-            children: [
-              _Legend(color: Color(0xFF6B5DD3), label: 'Billing Completed'),
-              SizedBox(height: 12),
-              _Legend(color: Color(0xFFA77A45), label: 'Billing Not Completed'),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
 class _BottomGrid extends StatelessWidget {
-  const _BottomGrid({required this.isWide});
+  const _BottomGrid({required this.isWide, required this.isMedium});
 
   final bool isWide;
+  final bool isMedium;
 
   @override
   Widget build(BuildContext context) {
@@ -1089,13 +1221,30 @@ class _BottomGrid extends StatelessWidget {
       ),
     ];
 
-    if (!isWide) {
+    if (!isWide && !isMedium) {
       return Column(
         children: [
           ...widgets.map((widget) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: widget,
               )),
+        ],
+      );
+    }
+
+    if (isMedium) {
+      return Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: widgets[0]),
+              const SizedBox(width: 12),
+              Expanded(child: widgets[1]),
+            ],
+          ),
+          const SizedBox(height: 12),
+          widgets[2],
         ],
       );
     }
@@ -1282,21 +1431,28 @@ class _QuickNavPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 14),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            physics: const NeverScrollableScrollPhysics(),
-            childAspectRatio: 1.2,
-            children: const [
-              _QuickNavTile(icon: Icons.cloud_upload_outlined, label: 'File Upload', color: Color(0xFF2F80ED)),
-              _QuickNavTile(icon: Icons.apartment_outlined, label: 'Plant Update', color: Color(0xFF4CAF50)),
-              _QuickNavTile(icon: Icons.calendar_month_outlined, label: 'Schedule Update', color: Color(0xFF6B5DD3)),
-              _QuickNavTile(icon: Icons.storage_outlined, label: 'Master Data', color: Color(0xFFF59E0B)),
-              _QuickNavTile(icon: Icons.table_chart_outlined, label: 'Pivot List', color: Color(0xFF38BDF8)),
-              _QuickNavTile(icon: Icons.local_shipping_outlined, label: 'Dispatch Update', color: Color(0xFF2F80ED)),
-            ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final crossAxisCount = constraints.maxWidth < 320 ? 1 : 2;
+              final aspectRatio = constraints.maxWidth < 320 ? 2.6 : 1.2;
+
+              return GridView.count(
+                crossAxisCount: crossAxisCount,
+                shrinkWrap: true,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                physics: const NeverScrollableScrollPhysics(),
+                childAspectRatio: aspectRatio,
+                children: const [
+                  _QuickNavTile(icon: Icons.cloud_upload_outlined, label: 'File Upload', color: Color(0xFF2F80ED)),
+                  _QuickNavTile(icon: Icons.apartment_outlined, label: 'Plant Update', color: Color(0xFF4CAF50)),
+                  _QuickNavTile(icon: Icons.calendar_month_outlined, label: 'Schedule Update', color: Color(0xFF6B5DD3)),
+                  _QuickNavTile(icon: Icons.storage_outlined, label: 'Master Data', color: Color(0xFFF59E0B)),
+                  _QuickNavTile(icon: Icons.table_chart_outlined, label: 'Pivot List', color: Color(0xFF38BDF8)),
+                  _QuickNavTile(icon: Icons.local_shipping_outlined, label: 'Dispatch Update', color: Color(0xFF2F80ED)),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 14),
           const Center(

@@ -23,6 +23,27 @@ The app includes `web/_redirects` so single-page routes keep working on refresh.
 
 ## Getting Started
 
+This repo uses a project-local temp directory for Flutter desktop runs because
+some macOS environments block Flutter from creating temp files in `/private/tmp`.
+
+Use these commands from the project root:
+
+- `flutter pub get`
+- `bash scripts/run_macos.sh`
+
+If you want the same temp-dir workaround for other Flutter commands, use:
+
+- `bash scripts/flutterw.sh <flutter-command>`
+
+Examples:
+
+- `bash scripts/flutterw.sh run -d macos`
+- `bash scripts/flutterw.sh test`
+- `bash scripts/flutterw.sh analyze`
+
+VS Code users can also run the checked-in launch config named
+`Flutter macOS (repo temp dir)`.
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
